@@ -1,0 +1,377 @@
+swagger: "2.0"
+info:
+  description: "Acamica+Globant Desarrollo Web Full Stack carreer."
+  version: "1.0.0"
+  title: "Delilah Restó API"
+
+host: "delilahrestoapp.com"
+basePath: "/v2"
+
+tags:
+  - name: "users"
+    description: "Users login and registration"
+  - name: "products"
+    description: "Products information and administrator operations available"
+  - name: "orders"
+    description: "Orders information and operations available"
+
+schemes:
+  - "https"
+  - "http"
+
+consumes:
+  - "application/json"
+  - "application/xml"
+produces:
+  - "application/xml"
+  - "application/json"
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - "users"
+      summary: "Register a new user"
+      description: ""
+      operationId: "registerUser"
+      parameters:
+        - in: "body"
+          name: "Information needed to register a user"
+          description: "The user completes the information asked for in the registering form"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "400":
+          description: "There was a problem with the data provided."
+        "500":
+          description: "This username/email is already registered."
+        "200":
+          description: "User created."
+  /users/login:
+    post:
+      tags:
+        - "users"
+      summary: "Update an existing pet"
+      description: ""
+      operationId: "updatePet"
+      consumes:
+        - "application/json"
+        - "application/xml"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Pet object that needs to be added to the store"
+          required: true
+          schema:
+            $ref: "#/definitions/UserLogin"
+      responses:
+        "400":
+          description: "There was a problem with the data provided."
+        "404":
+          description: "Username or password invalid."
+        "200":
+          description: "Successfully logged in."
+  /products:
+    get:
+      tags:
+        - "products"
+      summary: "Returns all products"
+      description: "Returns all the products in the database"
+      operationId: "getProductsData"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "token"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "500":
+          description: "Hubo un error con la base de datos."
+        "200":
+          description: "Returning all available products."
+    post:
+      tags:
+        - "products"
+      summary: "Creates a new product"
+      description: "Creates a new product in the database"
+      operationId: "newProduct"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: "Data needed for a product"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "400":
+          description: "There was a problem with the information provided."
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "201":
+          description: "Product created."
+  /products/{id}:
+    put:
+      tags:
+        - "products"
+      summary: "Modifies a product"
+      description: "Modifies a product"
+      operationId: "modifyProduct"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Product id"
+          required: true
+          type: "number"
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Product"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "400":
+          description: "There was a problem with the information provided."
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "404":
+          description: "The product does not exist."
+        "200":
+          description: "Product modified."
+    delete:
+      tags:
+        - "products"
+      summary: "Deletes a product"
+      description: "Deletes a product (deactivates it)"
+      operationId: "deleteProduct"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Product id"
+          required: true
+          type: "number"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "404":
+          description: "The product does not exist."
+        "200":
+          description: "Product deleted."
+  /orders:
+    get:
+      tags:
+        - "orders"
+      summary: "Returns all orders if admin, or user's orders if not admin"
+      description: "Returns orders"
+      operationId: "getOrdersData"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - in: "header"
+          name: "token"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "200":
+          description: "You have access to all orders/You have access to your orders."
+    post:
+      tags:
+        - "orders"
+      summary: "Creates a new order"
+      description: "Creates a new order in the database"
+      operationId: "newOrder"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "body"
+          in: "body"
+          description: "Data needed for an order"
+          required: true
+          schema:
+            $ref: "#/definitions/Order"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "400":
+          description: "There was a problem with the information provided."
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "404":
+          description: "Some products are not available."
+        "500":
+          description: "Products cannot be inserted into the database. The order was deleted from database."
+        "201":
+          description: "Order successfully created."
+  /orders/{id}:
+    put:
+      tags:
+        - "orders"
+      summary: "Modifies the order state"
+      description: "Modifies the order state"
+      operationId: "modifyOrderStatus"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Order id"
+          required: true
+          type: "number"
+        - name: "body"
+          in: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/OrderState"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "400":
+          description: "There was a problem with the information provided."
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "404":
+          description: "The order does not exist."
+        "200":
+          description: "Order updated."
+    delete:
+      tags:
+        - "orders"
+      summary: "Deletes the order."
+      description: "Deletes de order."
+      operationId: "deleteOrder"
+      produces:
+        - "application/xml"
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Order id"
+          required: true
+          type: "number"
+        - name: "token"
+          in: "header"
+          description: "Token"
+          required: true
+          type: "string"
+      responses:
+        "403":
+          description: "Unable to verify the token/Permission denied."
+        "404":
+          description: "The order does not exist."
+        "200":
+          description: "Order deleted."
+definitions:
+  User:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      pasword:
+        type: "string"
+      fullName:
+        type: "string"
+      email:
+        type: "string"
+      phoneNumber:
+        type: "string"
+      address:
+        type: "string"
+      isAdmin:
+        type: "boolean"
+    xml:
+      name: "User"
+  UserLogin:
+    type: "object"
+    properties:
+      userName:
+        type: "string"
+      pasword:
+        type: "string"
+    xml:
+      name: "UserLogin"
+  Product:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      description:
+        type: "string"
+      price:
+        type: "number"
+      imgSrc:
+        type: "string"
+      isAvailable:
+        type: "boolean"
+    xml:
+      name: "Product"
+  Order:
+    type: "object"
+    properties:
+      paymentMethod:
+        type: "string"
+        enum:
+          - "Efectivo"
+          - "Tarjeta"
+      productsArray:
+        type: "array"
+        items:
+          type: object
+          properties:
+            id:
+              type: "number"
+            quantity:
+              type: "number"
+    xml:
+      name: "Order"
+  OrderState:
+    type: "object"
+    properties:
+      state:
+        type: "string"
+        enum:
+          - "Nuevo"
+          - "Confirmado"
+          - "Preparando"
+          - "Enviando"
+          - "Entregado"
