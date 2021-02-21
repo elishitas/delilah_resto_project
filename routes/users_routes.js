@@ -9,7 +9,7 @@ router.post('/login',
     userMiddlewares.requireLoginData,
     userControllers.loginUser
 );
-//validate users credentials deberia ser parte de loginUser
+
 router.post('/register',
     generalMiddlewares.checkBody,
     userMiddlewares.requireRegisterData,
