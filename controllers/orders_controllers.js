@@ -17,7 +17,7 @@ orders_controllers.newOrder = async (req, res) => {
     const newOrderDB = await projectDatabase.ordersModel.create(newOrder)
     .catch(err => catchDatabaseEror(err, res));
 
-    //I save order info
+    //Save order info
     const newOrderId = newOrderDB.id;
     const ordersProductsArray = makeArrayForOrdersProducts(newOrderId, dbProducts, req.body.productsArray);
 

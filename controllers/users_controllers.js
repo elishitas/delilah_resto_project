@@ -3,6 +3,7 @@ const JWTSign = 'mySUPERpass.12';
 const projectDatabase = require('../config/database');
 const users_controllers = {};
 
+//login User
 users_controllers.loginUser = async (req, res) => {
     const userName = req.body.userName;
     const password = req.body.password;
@@ -26,6 +27,7 @@ users_controllers.loginUser = async (req, res) => {
     }
 };
 
+//Register User
 users_controllers.registerUser = async (req, res) => {
     const userData = req.body;
 
@@ -42,7 +44,8 @@ users_controllers.registerUser = async (req, res) => {
 };
 
 //Auxiliary functions
-//I catch an error in the database
+//Catch error in the database
+
 const catchDatabaseEror = (err, res) => {
     res.status(500).json({
         message: 'There was a problem with the database.',
