@@ -8,7 +8,7 @@ $ git clone https://github.com/elishitas/delilah_resto_project
 
 Or you just can download it from Github
 
-## 💫Installing dependencies:
+## 💫 Installing dependencies:
 $ npm install
 NodeJS 
 XAMPP 
