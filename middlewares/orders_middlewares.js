@@ -12,7 +12,7 @@ orders_middlewares.requireOrderData = (req, res, next) => {
         });
     } else if(!Array.isArray(productsArray) || productsArray.length === 0) {
         res.status(400).json({
-            message: 'Your order is empty!'
+            message: 'Your order is empty =('
         });
     } else {
         next();
@@ -24,7 +24,7 @@ orders_middlewares.requireOrderStatus = (req, res, next) => {
 
     if(typeof(state) !== 'string') {
         res.status(400).json({
-            message: 'There was a problem with the state provided'
+            message: 'There was a problem with the state provided 0.o'
         });
     } else {
         next();
@@ -39,7 +39,7 @@ orders_middlewares.validateOrderId = async (req, res, next) => {
         next();
     } else {
         res.status(404).json({
-            message: 'The order does not exist.'
+            message: 'The order does not exist -.-'
         });
     }
 };
@@ -59,7 +59,7 @@ orders_middlewares.isProductAvailable = async (req, res, next) => {
 
     if(productsArray.length !== products.length) {
         res.status(404).json({
-            message: 'Some products are not available.'
+            message: 'Some products are not available _._'
         });
     } else {
         res.locals.products = products;

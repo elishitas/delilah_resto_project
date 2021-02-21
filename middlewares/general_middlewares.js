@@ -18,7 +18,7 @@ general_middlewares.validateToken = (req, res, next) => {
 
     const tokenVerified = JWT.verify(token, JWTSign, (error, decoded) => {
         if(error) {
-            res.status(403).json({
+            res.status(401).json({
                 message: 'Unable to verify the token.',
                 error
             });
@@ -28,6 +28,8 @@ general_middlewares.validateToken = (req, res, next) => {
         }
     });
 };
+
+//this
 
 general_middlewares.isAdminUser = (req, res, next) => {
     if(res.locals.userPayload.isAdmin === false) {
