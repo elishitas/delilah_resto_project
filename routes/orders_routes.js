@@ -18,7 +18,8 @@ router.post('/',
 //public access and private
 router.get('/',
     generalMiddlewares.validateToken,
-    orderControllers.getOrdersData
+    orderControllers.getOrdersData,
+    generalMiddlewares.isAdminUser
 );
 
 //this
